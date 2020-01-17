@@ -1,0 +1,15 @@
+<section class="box label-header">
+    <div class="cell" style="font-size: 18px;">
+        {{.Label.LabelName}}
+        <small>共计{{.Label.TopicsCount}}个主题</small>
+    </div>
+    <div class="cell gray">
+        {{.Label.LabelDesc}}
+    </div>
+</section>
+
+<section class="box post-wrap">
+    {{range .Topics}}
+        {{template "post" .}}
+    {{end}}
+</section>

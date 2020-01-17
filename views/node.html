@@ -1,0 +1,8 @@
+<section class="box">
+    <div class="cell">全部节点</div>
+    <div class="cell">
+        {{range .Labels}}
+            <a href="/label/{{.ID}}" class="badge badge-light node-item">{{.LabelName}} <span class="badge badge-pill badge-dark">{{.TopicsCount}}</span></a>
+        {{end}}
+    </div>
+</section>

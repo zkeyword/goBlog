@@ -1,0 +1,56 @@
+<div>
+    <form class="t-edit" id="new-topic">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">AGGRA</a></li>
+                <li class="breadcrumb-item active" aria-current="page">创作新主题</li>
+            </ol>
+        </nav>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">主题标题</label>
+            <div class="col-sm-10">
+                <input id="title" type="text" class="form-control" name="title" placeholder="请输入主题标题" autofocus
+                       required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">主题正文<span>(*支持Markdown)</span></label>
+            <textarea class="form-control" style="min-height: 300px" name="content"></textarea>
+        </div>
+        <div class="input-group form-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">选择节点</label>
+            </div>
+            <select class="custom-select" id="label_id" name="label_id" required>
+                {{range .Labels}}
+                    <option value="{{.ID}}">{{.LabelName}}</option>
+                {{end}}
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="submit" data-url="/new" class="btn btn-primary" type="submit">发布主题</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+window.onload = function () {
+    const editor = new Editor();
+    editor.render();
+    document.getElementById('submit').addEventListener('click', function (event) {
+        event.preventDefault();
+        const title = document.getElementById('title').value;
+        const label = document.getElementById('label_id').value;
+        const content = editor.codemirror.getValue();
+        axios.post('/new', UTIL.stringify({title, label_id: label, content}))
+            .then(result => {
+                if (!result.data.success) return alert(result.data.message);
+                alert('发表成功!');
+                setTimeout(function () {
+                    window.location.href = result.data.return_url || "/login";
+                }, 3000);
+            }).catch(() => alert('网络错误!'));
+    })
+}
+</script>
