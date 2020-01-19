@@ -1,8 +1,8 @@
 package main
 
 import (
+	"BLOG/app"
 	"BLOG/config"
-	"BLOG/middleware"
 	"BLOG/util/db"
 	"flag"
 	"fmt"
@@ -32,7 +32,7 @@ func main() {
 
 	// 开始运行iris框架
 	fmt.Print("Run Iris...\r")
-	middleware.RunIris(config.ServerPort)
+	app.New()
 }
 
 func checkErr(errMsg string, err error) {
