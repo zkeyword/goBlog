@@ -5,23 +5,34 @@ import (
 	"BLOG/repository"
 )
 
-var ArticleService = newArticleService()
-
-func newArticleService() *articleService {
-	return &articleService{}
+// ArticleService 文章服务
+type ArticleService interface {
+	Get(id int64) *model.Article
+	GetList() []model.Article
+	Create(Article *model.Article)
 }
 
 type articleService struct {
+	repo *repository.ArticleRepository
+}
+
+// NewArticleService 实例化ArticleService
+var NewArticleService = newArticleService()
+
+func newArticleService() ArticleService {
+	return &articleService{
+		repo: repository.NewArticleRepository(),
+	}
 }
 
 func (s *articleService) Get(id int64) *model.Article {
-	return repository.ArticleRepository.Get(id)
+	return s.repo.Get(id)
 }
 
 func (s *articleService) GetList() []model.Article {
-	return repository.ArticleRepository.GetList()
+	return s.repo.GetList()
 }
 
 func (s *articleService) Create(Article *model.Article) {
-	repository.ArticleRepository.Create(Article)
+	s.repo.Create(Article)
 }

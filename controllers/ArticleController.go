@@ -21,7 +21,7 @@ func (ctx *ArticleController) Get() mvc.Result {
 	var results = make(map[string]interface{})
 
 	results["Title"] = "文章页"
-	results["Articles"] = services.ArticleService.GetList()
+	results["Articles"] = services.NewArticleService.GetList()
 
 	return mvc.View{
 		Name: "article.html",
@@ -41,7 +41,7 @@ func (ctx *ArticleController) Post() {
 		Title:    title,
 		AuthorID: 1,
 	}
-	services.ArticleService.Create(Article)
+	services.NewArticleService.Create(Article)
 }
 
 // GetBy 文章详情 /article/123
@@ -49,7 +49,7 @@ func (ctx *ArticleController) GetBy(articleID int64) mvc.Result {
 	var results = make(map[string]interface{})
 
 	results["Title"] = "文章页"
-	results["Article"] = services.ArticleService.Get(articleID)
+	results["Article"] = services.NewArticleService.Get(articleID)
 
 	return mvc.View{
 		Name: "articleDetail.html",

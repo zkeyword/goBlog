@@ -1,6 +1,8 @@
 <section class="box">
     <div class="cell">文章页</div>
     <div class="cell">
+        {{if .Article}}
         {{.Article.Content | Html}}
+        {{end}}
     </div>
 </section>

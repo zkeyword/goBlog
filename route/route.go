@@ -6,13 +6,21 @@ import (
 
 	"BLOG/config"
 	"BLOG/util/strtime"
+	"time"
+
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/mvc"
-	"time"
+	"github.com/kataras/iris/sessions"
 )
 
+// Application app
+type Application struct {
+	*iris.Application
+	Sessions *sessions.Sessions
+}
+
 // InnerRoute 注入路由
-func InnerRoute(app *iris.Application) {
+func InnerRoute(app *Application) {
 
 	SetupViews(app, "./views")
 	SetupErrorHandlers(app)
@@ -24,6 +32,7 @@ func InnerRoute(app *iris.Application) {
 	mvc.Configure(app.Party("/"), func(m *mvc.Application) {
 		m.Party("/").Handle(new(controllers.HomeController))
 		m.Party("/article").Handle(new(controllers.ArticleController))
+		m.Party("/captcha").Handle(new(controllers.CaptchaController))
 		// m.Party("/tag").Handle(new(controllers.HomeController))
 		// m.Party("/user").Handle(new(controllers.HomeController))
 		// m.Party("/category").Handle(new(controllers.HomeController))
@@ -48,7 +57,7 @@ func InnerRoute(app *iris.Application) {
 }
 
 // SetupViews 设置Views
-func SetupViews(app *iris.Application, viewsDir string) {
+func SetupViews(app *Application, viewsDir string) {
 	htmlEngine := iris.HTML(viewsDir, ".html").Layout("shared/layout.html")
 	htmlEngine.Reload(true)
 	// 给模板内置方法
@@ -79,7 +88,7 @@ func SetupViews(app *iris.Application, viewsDir string) {
 }
 
 // SetupErrorHandlers 错误处理
-func SetupErrorHandlers(app *iris.Application) {
+func SetupErrorHandlers(app *Application) {
 	app.OnAnyErrorCode(func(ctx iris.Context) {
 		errorMsg := ctx.Values().GetString("message_status")
 		errorCode := ctx.GetStatusCode()
@@ -102,5 +111,13 @@ func SetupErrorHandlers(app *iris.Application) {
 		ctx.ViewData("Title", "Error")
 		ctx.ViewLayout("shared/layout_error.html")
 		_ = ctx.View("shared/error.html")
+	})
+}
+
+// SetupSessions 设置Session
+func SetupSessions(app *Application) {
+	app.Sessions = sessions.New(sessions.Config{
+		Cookie:  "ssid",
+		Expires: 24 * time.Hour,
 	})
 }
