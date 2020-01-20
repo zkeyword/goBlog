@@ -1,6 +1,6 @@
 package business_errors
 
-import "github.com/kataras/iris/core/errors"
+import errors "github.com/kataras/iris/v12/core/errgroup"
 
 var (
 	LabelNameAlreadyExists = errors.New("用户名已存在")

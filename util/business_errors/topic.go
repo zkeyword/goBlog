@@ -1,6 +1,6 @@
 package business_errors
 
-import "github.com/kataras/iris/core/errors"
+import errors "github.com/kataras/iris/v12/core/errgroup"
 
 var (
 	TopicTitleNotBeEmpty = errors.New("帖子标题不能为空")

@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"unicode/utf8"
 
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 // ArticleController 首页

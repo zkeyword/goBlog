@@ -6,11 +6,12 @@ import (
 
 	"BLOG/config"
 	"BLOG/controllers"
+	"BLOG/middleware"
 	"BLOG/util/strtime"
 
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
-	"github.com/kataras/iris/sessions"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
+	"github.com/kataras/iris/v12/sessions"
 )
 
 // Application app
@@ -27,10 +28,10 @@ func InnerRoute(app *Application) {
 	SetupSessions(app)
 
 	// 设置静态路径
-	app.StaticWeb("/public", "./public")
+	app.HandleDir("/public", "./public")
 
 	// blog
-	mvc.Configure(app.Party("/"), func(m *mvc.Application) {
+	mvc.Configure(app.Party("/", middleware.Cors()), func(m *mvc.Application) {
 		m.Register(app.Sessions.Start) // 保持在controller之前，否则无效
 		m.Party("/").Handle(new(controllers.HomeController))
 		m.Party("/article").Handle(new(controllers.ArticleController))

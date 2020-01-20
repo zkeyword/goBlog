@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/context"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -59,7 +59,7 @@ func Post(url string, header map[string]string, data iris.Map) ([]byte, error) {
 		return nil, err
 	} else {
 		if req, err = http.NewRequest("POST", url, bytes.NewReader(b)); err != nil {
-			return nil , err
+			return nil, err
 		}
 	}
 
@@ -70,7 +70,7 @@ func Post(url string, header map[string]string, data iris.Map) ([]byte, error) {
 	}
 
 	if resp, err = client.Do(req); err != nil {
-		return nil , err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -105,7 +105,7 @@ func Get(url string, header map[string]string, data iris.Map) ([]byte, error) {
 	}
 
 	if req, err = http.NewRequest("GET", url, nil); err != nil {
-		return nil , err
+		return nil, err
 	}
 
 	if len(header) != 0 {
@@ -115,7 +115,7 @@ func Get(url string, header map[string]string, data iris.Map) ([]byte, error) {
 	}
 
 	if resp, err = client.Do(req); err != nil {
-		return nil , err
+		return nil, err
 	}
 	defer resp.Body.Close()
 

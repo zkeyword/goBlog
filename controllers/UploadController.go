@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 // UploadController 首页

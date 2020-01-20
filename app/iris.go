@@ -9,7 +9,7 @@ import (
 	"BLOG/config"
 	"BLOG/middleware"
 
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
 )
 
 // New 初始化
