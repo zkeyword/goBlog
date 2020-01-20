@@ -13,6 +13,7 @@ import (
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
+	i18n "github.com/iris-contrib/middleware/go-i18n"
 )
 
 // Application app
@@ -49,6 +50,10 @@ func (app *Application) RunIris() *Application {
 
 		app.Shutdown(ctx)
 	})
+
+	// 国际化
+	app.I18n.Reset(i18n.NewLoader("./locales/*.yaml"))
+	app.I18n.SetDefault("en-US")
 
 	// 设置view路径
 	SetupViews(app, "./views")

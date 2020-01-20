@@ -14,10 +14,19 @@ type HomeController struct {
 	Ctx iris.Context
 }
 
+type user struct {
+	Name string
+}
+
 // Get 首页Get请求
 func (ctx *HomeController) Get() mvc.Result {
 	var results = make(map[string]interface{})
 	results["Title"] = "首页"
+
+	fmt.Println(ctx.Ctx.GetLocale().Language(), ctx.Ctx.Tr("hi", &user{
+		Name: "John Doe",
+	}))
+
 	return mvc.View{
 		Name: "index.html",
 		Data: result.Map(results),

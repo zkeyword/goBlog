@@ -10,6 +10,7 @@ require (
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/iris-contrib/httpexpect v0.0.0-20180314041918-ebe99fcebbce // indirect
 	github.com/iris-contrib/middleware/cors v0.0.0-20191219204441-78279b78a367
+	github.com/iris-contrib/middleware/go-i18n v0.0.0-20191219204441-78279b78a367
 	github.com/iris-contrib/middleware/jwt v0.0.0-20191219204441-78279b78a367
 	github.com/issue9/identicon v1.0.1
 	github.com/jinzhu/gorm v1.9.12
