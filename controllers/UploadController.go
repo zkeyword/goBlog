@@ -32,7 +32,7 @@ func (ctx *UploadController) Post() {
 	}
 	defer file.Close()
 	filename := info.Filename
-	out, err := os.OpenFile("./uploads/"+filename,
+	out, err := os.OpenFile("./public/uploads/"+filename,
 		os.O_WRONLY|os.O_CREATE, 0666)
 	defer out.Close()
 	io.Copy(out, file)

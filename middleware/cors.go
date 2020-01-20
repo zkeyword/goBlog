@@ -3,16 +3,15 @@ package middleware
 import (
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris/v12/context"
-
 )
 
-func Cors() context.Handler {
-	crs := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"}, //允许通过的主机名称
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"*"},
-		Debug:          true,
-		//AllowCredentials: true,
+// CORS CORS Handler
+var CORS context.Handler
+
+func initCORS() {
+	CORS = cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"}, // Allows everything, use that to change the hosts.
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"*"}, // If do not set this will not be able to customize the header.
 	})
-	return crs
 }
