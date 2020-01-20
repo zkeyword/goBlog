@@ -31,9 +31,10 @@ func InnerRoute(app *Application) {
 
 	// blog
 	mvc.Configure(app.Party("/"), func(m *mvc.Application) {
-		// m.Register(app.Sessions.Start) // 保持在controller之前，否则无效
+		m.Register(app.Sessions.Start) // 保持在controller之前，否则无效
 		m.Party("/").Handle(new(controllers.HomeController))
 		m.Party("/article").Handle(new(controllers.ArticleController))
+		m.Party("/upload", iris.LimitRequestBodySize(5<<20)).Handle(new(controllers.UploadController))
 		m.Party("/captcha").Handle(new(controllers.CaptchaController))
 		// m.Party("/tag").Handle(new(controllers.HomeController))
 		// m.Party("/user").Handle(new(controllers.HomeController))
@@ -44,16 +45,6 @@ func InnerRoute(app *Application) {
 	mvc.Configure(app.Party("/api/"), func(m *mvc.Application) {
 		// m.Router.Use(middleware.AdminAuth)
 		// m.Party("/user").Handle(new(admin.UserController))
-		// m.Party("/third-account").Handle(new(admin.ThirdAccountController))
-		// m.Party("/tag").Handle(new(admin.TagController))
-		// m.Party("/article").Handle(new(admin.ArticleController))
-		// m.Party("/comment").Handle(new(admin.CommentController))
-		// m.Party("/favorite").Handle(new(admin.FavoriteController))
-		// m.Party("/article-tag").Handle(new(admin.ArticleTagController))
-		// m.Party("/topic").Handle(new(admin.TopicController))
-		// m.Party("/topic-node").Handle(new(admin.TopicNodeController))
-		// m.Party("/sys-config").Handle(new(admin.SysConfigController))
-		// m.Party("/link").Handle(new(admin.LinkController))
 	})
 
 }

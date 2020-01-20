@@ -31,7 +31,6 @@ func main() {
 	fmt.Print("Start Mysql Success!!!\n")
 
 	// 开始运行iris框架
-	fmt.Print("Run Iris...\r")
 	app.New()
 }
 

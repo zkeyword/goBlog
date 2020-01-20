@@ -22,6 +22,7 @@ func New() {
 // RunIris 启动iris
 func (app *Application) RunIris() *Application {
 
+	// 错误拦截以及访问日志
 	app.Use(Recover())
 	app.Use(AccessLog())
 

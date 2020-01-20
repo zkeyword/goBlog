@@ -6,6 +6,8 @@ import (
 	"github.com/dchest/captcha"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/sessions"
+
+	"BLOG/model"
 )
 
 // CaptchaController 验证码控制器
@@ -26,7 +28,10 @@ func (ctx *CaptchaController) Get() {
 func (ctx *CaptchaController) Post() {
 	code := ctx.Ctx.PostValue("code")
 	isOK := captcha.VerifyString(ctx.Session.GetString("captchaID"), code)
-	var results = make(map[string]interface{})
-	results["message"] = isOK
-	ctx.Ctx.JSON(results)
+	if isOK {
+		ctx.Ctx.JSON(new(model.ResModel).WithData(isOK))
+		return
+	}
+	ctx.Ctx.JSON(new(model.ResModel).WithError("-1", "验证码错误"))
+
 }

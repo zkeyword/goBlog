@@ -36,6 +36,7 @@ func Recover() iris.Handler {
 				logMessage += fmt.Sprintf("\n%s", stacktrace)
 
 				logrus.Errorf("recover => %s", logMessage)
+				fmt.Println(err)
 
 				ctx.StatusCode(500)
 				ctx.StopExecution()
