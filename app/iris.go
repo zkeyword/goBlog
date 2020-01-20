@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"BLOG/config"
+	"BLOG/middleware"
 
 	"github.com/kataras/iris"
 )
@@ -23,8 +24,8 @@ func New() {
 func (app *Application) RunIris() *Application {
 
 	// 错误拦截以及访问日志
-	app.Use(Recover())
-	app.Use(AccessLog())
+	app.Use(middleware.Recover())
+	app.Use(middleware.AccessLog())
 
 	// 优雅的关闭程序
 	serverWG := new(sync.WaitGroup)
