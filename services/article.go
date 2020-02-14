@@ -10,7 +10,7 @@ type ArticleService interface {
 	Get(id int64) *model.Article
 	GetPrev(id int64) *model.Article
 	GetNext(id int64) *model.Article
-	GetList() []model.Article
+	GetList(page int, pageSize int) (repository.ArticleList, error)
 	Create(Article *model.Article)
 }
 
@@ -39,8 +39,8 @@ func (s *articleService) GetNext(id int64) *model.Article {
 	return s.repo.GetNext(id)
 }
 
-func (s *articleService) GetList() []model.Article {
-	return s.repo.GetList()
+func (s *articleService) GetList(page int, pageSize int) (repository.ArticleList, error) {
+	return s.repo.GetList(page, pageSize)
 }
 
 func (s *articleService) Create(Article *model.Article) {

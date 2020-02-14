@@ -10,6 +10,14 @@ import (
 type ArticleRepository struct {
 }
 
+// ArticleList 文章response
+type ArticleList struct {
+	Data     []model.Article
+	Total    int
+	PageSize int
+	Page     int
+}
+
 // NewArticleRepository 实例化DAO
 func NewArticleRepository() *ArticleRepository {
 	return &ArticleRepository{}
@@ -51,13 +59,26 @@ func (r *ArticleRepository) GetNext(id int64) *model.Article {
 // 	err := db.GetMysql().Find(ret).Error
 // 	return ret, err
 // }
-func (r *ArticleRepository) GetList() []model.Article {
+func (r *ArticleRepository) GetList(page int, pageSize int) (ArticleList, error) {
 	ret := make([]model.Article, 0)
-	if err := db.GetMysql().Find(&ret).Error; err != nil {
+	orm := db.GetMysql() //.Debug()
+	list := orm.Order("created_at DESC").Offset((page - 1) * pageSize).Limit(10).Find(&ret)
+	total := 0
+	if err := orm.Model(&model.Article{}).Count(&total).Error; err != nil {
 		fmt.Println(err)
-		return nil
+		return ArticleList{}, err
 	}
-	return ret
+	fmt.Println(total)
+	if err := list.Error; err != nil {
+		fmt.Println(err)
+		return ArticleList{}, err
+	}
+	return ArticleList{
+		Data:     ret,
+		PageSize: pageSize,
+		Page:     page,
+		Total:    total,
+	}, nil
 }
 
 // Create 创建文章

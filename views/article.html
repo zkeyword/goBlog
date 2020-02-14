@@ -1,8 +1,8 @@
 <section class="box">
     <div class="cell">文章页</div>
     <div class="cell">
-        {{range .Articles}}
-            <a href="/article/{{.ID}}">{{.Title}}</a>
+        {{range .Articles.Data}}
+            <div><a href="/article/{{.ID}}">{{.Title}}</a></div>
         {{end}} 
     </div>
 </section>

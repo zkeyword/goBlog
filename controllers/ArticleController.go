@@ -5,6 +5,7 @@ import (
 	"BLOG/services"
 	"BLOG/util/result"
 	"fmt"
+	"strconv"
 	"unicode/utf8"
 
 	"github.com/kataras/iris/v12"
@@ -18,10 +19,14 @@ type ArticleController struct {
 
 // Get 文章列表Get请求
 func (ctx *ArticleController) Get() mvc.Result {
-	var results = make(map[string]interface{})
+	page, err := strconv.Atoi(ctx.Ctx.URLParam("page"))
+	results := make(map[string]interface{})
+	list, err := services.NewArticleService.GetList(page, 10)
 
-	results["Title"] = "文章页"
-	results["Articles"] = services.NewArticleService.GetList()
+	if err == nil {
+		results["Title"] = "文章页"
+		results["Articles"] = list
+	}
 
 	return mvc.View{
 		Name: "article.html",
