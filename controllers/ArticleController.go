@@ -47,9 +47,14 @@ func (ctx *ArticleController) Post() {
 // GetBy 文章详情 /article/123
 func (ctx *ArticleController) GetBy(articleID int64) mvc.Result {
 	var results = make(map[string]interface{})
+	var article = services.NewArticleService.Get(articleID)
 
-	results["Title"] = "文章页"
-	results["Article"] = services.NewArticleService.Get(articleID)
+	if article != nil {
+		results["Title"] = article.Title
+		results["Article"] = article
+		results["Prev"] = services.NewArticleService.GetPrev(articleID)
+		results["Next"] = services.NewArticleService.GetNext(articleID)
+	}
 
 	return mvc.View{
 		Name: "articleDetail.html",

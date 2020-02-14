@@ -1,8 +1,17 @@
 <section class="box">
-    <div class="cell">文章页</div>
-    <div class="cell">
-        {{if .Article}}
-        {{.Article.Content | Html}}
-        {{end}}
-    </div>
+    {{if .Article}}
+        <div class="title">{{.Article.Title}}</div>
+        <div class="time">{{.Article.UpdatedAt | FromUnixtimeShort}}</div>
+        <div>{{.Article.Content | Html}}</div>
+        {{if .Prev}}
+        <div class="prev">
+            上一篇: <a href="/article/{{.Prev.ID}}">{{.Prev.Title}}</a>
+        </div>
+        {{end}} 
+        {{if .Next}}
+        <div class="next">
+            下一篇: <a href="/article/{{.Next.ID}}">{{.Next.Title}}</a>
+        </div>
+        {{end}} 
+    {{end}}
 </section>

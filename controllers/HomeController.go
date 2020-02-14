@@ -81,6 +81,7 @@ func (ctx *HomeController) PostLogin() {
 	_, _ = ctx.Ctx.JSON(results)
 }
 
+// GetSignup 注册
 func (ctx *HomeController) GetSignup() mvc.Result {
 	var (
 		results = make(map[string]interface{})

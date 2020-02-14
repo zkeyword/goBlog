@@ -19,7 +19,7 @@ func InnerRoute(app *Application) {
 		m.Register(app.Sessions.Start) // 保持在controller之前，否则无效
 		m.Party("/").Handle(new(controllers.HomeController))
 		m.Party("/article").Handle(new(controllers.ArticleController))
-		// m.Party("/tag").Handle(new(controllers.HomeController))
+		m.Party("/tag").Handle(new(controllers.TagController))
 		// m.Party("/user").Handle(new(controllers.HomeController))
 		// m.Party("/category").Handle(new(controllers.HomeController))
 	})

@@ -8,6 +8,8 @@ import (
 // ArticleService 文章服务
 type ArticleService interface {
 	Get(id int64) *model.Article
+	GetPrev(id int64) *model.Article
+	GetNext(id int64) *model.Article
 	GetList() []model.Article
 	Create(Article *model.Article)
 }
@@ -27,6 +29,14 @@ func newArticleService() ArticleService {
 
 func (s *articleService) Get(id int64) *model.Article {
 	return s.repo.Get(id)
+}
+
+func (s *articleService) GetPrev(id int64) *model.Article {
+	return s.repo.GetPrev(id)
+}
+
+func (s *articleService) GetNext(id int64) *model.Article {
+	return s.repo.GetNext(id)
 }
 
 func (s *articleService) GetList() []model.Article {

@@ -11,9 +11,9 @@ import (
 	"BLOG/middleware"
 	"BLOG/util/strtime"
 
+	i18n "github.com/iris-contrib/middleware/go-i18n"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
-	i18n "github.com/iris-contrib/middleware/go-i18n"
 )
 
 // Application app
@@ -61,7 +61,7 @@ func (app *Application) RunIris() *Application {
 	// 设置错误处理
 	SetupErrorHandlers(app)
 
-	// 设置错误处理
+	// 设置Session
 	SetupSessions(app)
 
 	// 注册路由
@@ -92,8 +92,8 @@ func SetupViews(app *Application, viewsDir string) {
 	htmlEngine := iris.HTML(viewsDir, ".html").Layout("shared/layout.html")
 	htmlEngine.Reload(true)
 	// 给模板内置方法
-	htmlEngine.AddFunc("FromUnixtimeShort", func(t int64) string {
-		dt := time.Unix(int64(t), int64(0))
+	htmlEngine.AddFunc("FromUnixtimeShort", func(t time.Time) string {
+		dt := time.Unix(t.Unix(), int64(0))
 		return dt.Format(config.SysTimeformShort)
 	})
 

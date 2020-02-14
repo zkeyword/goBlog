@@ -2,7 +2,7 @@
     <div class="cell">文章页</div>
     <div class="cell">
         {{range .Articles}}
-        {{.Title}}
+            <a href="/article/{{.ID}}">{{.Title}}</a>
         {{end}} 
     </div>
 </section>

@@ -19,9 +19,27 @@ func NewArticleRepository() *ArticleRepository {
 func (r *ArticleRepository) Get(id int64) *model.Article {
 	ret := &model.Article{}
 
-	fmt.Println(r)
-
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
+		return nil
+	}
+	return ret
+}
+
+// GetPrev 获取上一篇文章详情
+func (r *ArticleRepository) GetPrev(id int64) *model.Article {
+	ret := &model.Article{}
+
+	if err := db.GetMysql().First(ret, "id < ?", id).Order("DESC").Limit(1).Error; err != nil {
+		return nil
+	}
+	return ret
+}
+
+// GetNext 获取下一篇文章详情
+func (r *ArticleRepository) GetNext(id int64) *model.Article {
+	ret := &model.Article{}
+
+	if err := db.GetMysql().First(ret, "id > ?", id).Order("ASC").Limit(1).Error; err != nil {
 		return nil
 	}
 	return ret
