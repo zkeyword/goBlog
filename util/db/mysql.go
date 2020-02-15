@@ -24,8 +24,13 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 
 // GetMysql 获取mysql连接
 func GetMysql() *gorm.DB {
-	mysqlDB.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").AutoMigrate(&model.Article{},
-		&model.User{}, &model.Tag{})
+	mysqlDB.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+		AutoMigrate(
+			&model.Article{},
+			&model.User{},
+			&model.Tag{},
+			&model.ArticleTag{},
+		)
 	return mysqlDB
 }
 

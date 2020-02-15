@@ -20,12 +20,17 @@ type user struct {
 
 // Get 首页Get请求
 func (ctx *HomeController) Get() mvc.Result {
-	var results = make(map[string]interface{})
-	results["Title"] = "首页"
+	results := make(map[string]interface{})
+	list, err := services.NewArticleService.GetList(1, 10)
 
-	fmt.Println(ctx.Ctx.GetLocale().Language(), ctx.Ctx.Tr("hi", &user{
-		Name: "John Doe",
-	}))
+	results["Title"] = "首页"
+	if err == nil {
+		results["Articles"] = list
+	}
+
+	// fmt.Println(ctx.Ctx.GetLocale().Language(), ctx.Ctx.Tr("hi", &user{
+	// 	Name: "John Doe",
+	// }))
 
 	return mvc.View{
 		Name: "index.html",

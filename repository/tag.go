@@ -15,7 +15,7 @@ func NewTagRepository() *TagRepository {
 	return &TagRepository{}
 }
 
-// Get 获取文章详情
+// Get 获取标签关联的文章
 func (r *TagRepository) Get(id int64) *model.Tag {
 	ret := &model.Tag{}
 
@@ -27,12 +27,7 @@ func (r *TagRepository) Get(id int64) *model.Tag {
 	return ret
 }
 
-// GetList 获取文章列表
-// func (r *TagRepository) GetList() ([]model.Tag, error) {
-// 	ret := make([]model.Tag, 0)
-// 	err := db.GetMysql().Find(ret).Error
-// 	return ret, err
-// }
+// GetList 获取标签列表
 func (r *TagRepository) GetList() []model.Tag {
 	ret := make([]model.Tag, 0)
 	if err := db.GetMysql().Find(&ret).Error; err != nil {
@@ -42,7 +37,7 @@ func (r *TagRepository) GetList() []model.Tag {
 	return ret
 }
 
-// Create 创建文章
+// Create 创建标签
 func (r *TagRepository) Create(t *model.Tag) (err error) {
 	err = db.GetMysql().Create(t).Error
 	return

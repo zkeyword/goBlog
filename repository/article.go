@@ -68,7 +68,6 @@ func (r *ArticleRepository) GetList(page int, pageSize int) (ArticleList, error)
 		fmt.Println(err)
 		return ArticleList{}, err
 	}
-	fmt.Println(total)
 	if err := list.Error; err != nil {
 		fmt.Println(err)
 		return ArticleList{}, err
