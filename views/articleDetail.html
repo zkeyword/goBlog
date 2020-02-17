@@ -2,6 +2,9 @@
     {{if .Article}}
         <div class="title">{{.Article.Title}}</div>
         <div class="time">{{.Article.UpdatedAt | FromUnixtimeShort}}</div>
+        {{if .Article.TagName}}
+        <div class="tag">{{.Article.TagName}}</div>
+        {{end}}
         <div>{{.Article.Content | Html}}</div>
         {{if .Prev}}
         <div class="prev">

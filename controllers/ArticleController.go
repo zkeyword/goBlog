@@ -6,7 +6,6 @@ import (
 	"BLOG/util/result"
 	"fmt"
 	"strconv"
-	"unicode/utf8"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
@@ -38,21 +37,31 @@ func (ctx *ArticleController) Get() mvc.Result {
 func (ctx *ArticleController) Post() {
 	title := ctx.Ctx.PostValue("title")
 	content := ctx.Ctx.PostValue("content")
+	tagID, _ := strconv.Atoi(ctx.Ctx.PostValue("tagId"))
 
-	fmt.Println(utf8.ValidString(title))
-
-	var Article = &model.Article{
+	Article := &model.Article{
 		Content:  content,
 		Title:    title,
 		AuthorID: 1,
 	}
-	services.NewArticleService.Create(Article)
+
+	ArticleID, _ := services.NewArticleService.Create(Article)
+
+	if tagID != 0 {
+		ArticleTag := &model.ArticleTag{
+			TagID:     uint(tagID),
+			ArticleID: ArticleID,
+		}
+		services.NewArticleTagService.Create(ArticleTag)
+	}
 }
 
 // GetBy 文章详情 /article/123
 func (ctx *ArticleController) GetBy(articleID int64) mvc.Result {
 	var results = make(map[string]interface{})
 	var article = services.NewArticleService.Get(articleID)
+
+	fmt.Println(article)
 
 	if article != nil {
 		results["Title"] = article.Title

@@ -7,11 +7,11 @@ import (
 
 // ArticleService 文章服务
 type ArticleService interface {
-	Get(id int64) *model.Article
+	Get(id int64) *repository.Article
 	GetPrev(id int64) *model.Article
 	GetNext(id int64) *model.Article
 	GetList(page int, pageSize int) (repository.ArticleList, error)
-	Create(Article *model.Article)
+	Create(Article *model.Article) (uint, error)
 }
 
 type articleService struct {
@@ -27,7 +27,7 @@ func newArticleService() ArticleService {
 	}
 }
 
-func (s *articleService) Get(id int64) *model.Article {
+func (s *articleService) Get(id int64) *repository.Article {
 	return s.repo.Get(id)
 }
 
@@ -43,6 +43,7 @@ func (s *articleService) GetList(page int, pageSize int) (repository.ArticleList
 	return s.repo.GetList(page, pageSize)
 }
 
-func (s *articleService) Create(Article *model.Article) {
-	s.repo.Create(Article)
+func (s *articleService) Create(Article *model.Article) (uint, error) {
+	ID, err := s.repo.Create(Article)
+	return ID, err
 }

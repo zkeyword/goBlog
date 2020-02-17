@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"BLOG/model"
 	"BLOG/services"
 	"BLOG/util/result"
 
@@ -13,7 +14,7 @@ type TagController struct {
 	Ctx iris.Context
 }
 
-// Get 文章列表Get请求
+// Get 标签列表Get请求
 func (ctx *TagController) Get() mvc.Result {
 	var results = make(map[string]interface{})
 
@@ -24,4 +25,15 @@ func (ctx *TagController) Get() mvc.Result {
 		Name: "article.html",
 		Data: result.Map(results),
 	}
+}
+
+// Post 标签列表新增
+func (ctx *TagController) Post() {
+	title := ctx.Ctx.PostValue("title")
+
+	Tag := &model.Tag{
+		Title: title,
+	}
+
+	services.NewTagService.Create(Tag)
 }

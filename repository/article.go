@@ -4,6 +4,7 @@ import (
 	"BLOG/model"
 	"BLOG/util/db"
 	"fmt"
+	"time"
 )
 
 // ArticleRepository article DAO
@@ -18,18 +19,34 @@ type ArticleList struct {
 	Page     int
 }
 
+// Article 类型
+type Article struct {
+	ID        uint
+	Title     string
+	Content   string
+	UpdatedAt time.Time
+	TagID     int
+	TagName   string
+}
+
 // NewArticleRepository 实例化DAO
 func NewArticleRepository() *ArticleRepository {
 	return &ArticleRepository{}
 }
 
 // Get 获取文章详情
-func (r *ArticleRepository) Get(id int64) *model.Article {
-	ret := &model.Article{}
+func (r *ArticleRepository) Get(id int64) *Article {
+	ret := &Article{}
 
-	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
-		return nil
-	}
+	db.GetMysql().
+		// Debug().
+		Table("articles a").
+		Select("a.id, a.title, a.content, a.updated_at, t.id tag_id, t.title tag_name").
+		Joins("left join article_tags r on a.id = r.article_id").
+		Joins("left join tags t on t.id = r.tag_id").
+		Where("a.id = ?", id).
+		Find(&ret)
+
 	return ret
 }
 
@@ -81,7 +98,7 @@ func (r *ArticleRepository) GetList(page int, pageSize int) (ArticleList, error)
 }
 
 // Create 创建文章
-func (r *ArticleRepository) Create(t *model.Article) (err error) {
-	err = db.GetMysql().Create(t).Error
-	return
+func (r *ArticleRepository) Create(t *model.Article) (uint, error) {
+	err := db.GetMysql().Create(t).Error
+	return t.ID, err
 }

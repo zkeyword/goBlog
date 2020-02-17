@@ -39,6 +39,6 @@ func (r *ArticleTagRepository) GetList() []model.ArticleTag {
 
 // Create 创建标签
 func (r *ArticleTagRepository) Create(t *model.ArticleTag) (err error) {
-	err = db.GetMysql().Create(t).Error
+	err = db.GetMysql().Debug().Create(t).Error
 	return
 }
