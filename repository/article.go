@@ -60,7 +60,7 @@ func (r *ArticleRepository) Get(id int64) *Article {
 func (r *ArticleRepository) GetPrev(id int64) *model.Article {
 	ret := &model.Article{}
 
-	if err := db.GetMysql().First(ret, "id < ?", id).Order("DESC").Limit(1).Error; err != nil {
+	if err := db.GetMysql().Order("id DESC").Limit(1).First(ret, "id < ?", id).Error; err != nil {
 		return nil
 	}
 	return ret
@@ -70,7 +70,7 @@ func (r *ArticleRepository) GetPrev(id int64) *model.Article {
 func (r *ArticleRepository) GetNext(id int64) *model.Article {
 	ret := &model.Article{}
 
-	if err := db.GetMysql().First(ret, "id > ?", id).Order("ASC").Limit(1).Error; err != nil {
+	if err := db.GetMysql().Order("id ASC").Limit(1).First(ret, "id > ?", id).Error; err != nil {
 		return nil
 	}
 	return ret
