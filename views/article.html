@@ -2,4 +2,23 @@
     {{range .Articles.Data}}
     <div><a href="/article/{{.ID}}">{{.Title}}</a></div>
     {{end}}
+    <ul class="pagination">
+        <li>
+            <a href="?page=1&pageSize={{$.paging.Pagesize}}" class="not">«</a>
+        </li>
+        {{range $k,$v:=.paging.Num}}
+        <li>
+            <a
+                href="?page={{$v}}&pageSize={{$.paging.Pagesize}}"
+                class="{{if eq $v $.paging.Page}}active{{end}}"
+                >{{$v}}</a
+            >
+        </li>
+        {{end}}
+        <li>
+            <a href="?page={{.paging.PageCount}}&pageSize={{$.paging.Pagesize}}"
+                >»</a
+            >
+        </li>
+    </ul>
 </section>

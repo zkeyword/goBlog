@@ -1,9 +1,12 @@
 <section class="box">
     {{if .Article}}
         <div class="title">{{.Article.Title}}</div>
-        <div class="time">{{.Article.UpdatedAt | FromUnixtimeShort}}</div>
+        <div class="time">时间：{{.Article.UpdatedAt | FromUnixtimeShort}}</div>
         {{if .Article.TagName}}
-        <div class="tag">{{.Article.TagName}}</div>
+        <div class="tag">tag：{{.Article.TagName}}</div>
+        {{end}}
+        {{if .Author}}
+        <div class="author">author：{{.Author.Username}}</div>
         {{end}}
         <div>{{.Article.Content | Html}}</div>
         {{if .Prev}}

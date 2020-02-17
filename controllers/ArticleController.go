@@ -3,8 +3,8 @@ package controllers
 import (
 	"BLOG/model"
 	"BLOG/services"
+	"BLOG/util/helper"
 	"BLOG/util/result"
-	"fmt"
 	"strconv"
 
 	"github.com/kataras/iris/v12"
@@ -25,6 +25,7 @@ func (ctx *ArticleController) Get() mvc.Result {
 	if err == nil {
 		results["Title"] = "文章页"
 		results["Articles"] = list
+		results["paging"] = helper.CreatePaging(int64(list.Page), int64(list.PageSize), int64(list.Total))
 	}
 
 	return mvc.View{
@@ -61,13 +62,13 @@ func (ctx *ArticleController) GetBy(articleID int64) mvc.Result {
 	var results = make(map[string]interface{})
 	var article = services.NewArticleService.Get(articleID)
 
-	fmt.Println(article)
-
 	if article != nil {
+		author, _ := services.NewUserService.FindByID(article.AuthorID)
 		results["Title"] = article.Title
 		results["Article"] = article
 		results["Prev"] = services.NewArticleService.GetPrev(articleID)
 		results["Next"] = services.NewArticleService.GetNext(articleID)
+		results["Author"] = author
 	}
 
 	return mvc.View{

@@ -40,11 +40,6 @@ func newUserService() UserService {
 	}
 }
 
-func (s *userService) Get(id int64) *model.User {
-	return s.repo.Get(id)
-}
-
-
 func (s *userService) Create(user *model.User) error {
 	if s.CheckEmailExist(user.Username) {
 		return business_errors.UsernameAlreadyExists

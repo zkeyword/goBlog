@@ -19,11 +19,12 @@ type ArticleList struct {
 	Page     int
 }
 
-// Article 类型
+// Article 文章详情类型
 type Article struct {
 	ID        uint
 	Title     string
 	Content   string
+	AuthorID  uint
 	UpdatedAt time.Time
 	TagID     int
 	TagName   string
@@ -38,14 +39,19 @@ func NewArticleRepository() *ArticleRepository {
 func (r *ArticleRepository) Get(id int64) *Article {
 	ret := &Article{}
 
-	db.GetMysql().
+	err := db.GetMysql().
 		// Debug().
 		Table("articles a").
-		Select("a.id, a.title, a.content, a.updated_at, t.id tag_id, t.title tag_name").
+		Select("a.id, a.title, a.content, a.author_id, a.updated_at, t.id tag_id, t.title tag_name").
 		Joins("left join article_tags r on a.id = r.article_id").
 		Joins("left join tags t on t.id = r.tag_id").
 		Where("a.id = ?", id).
-		Find(&ret)
+		Find(&ret).
+		Error
+
+	if err != nil {
+		return nil
+	}
 
 	return ret
 }
