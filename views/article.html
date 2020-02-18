@@ -1,7 +1,5 @@
 <section class="box">
-    {{range .Articles.Data}}
-    <div><a href="/article/{{.ID}}">{{.Title}}</a></div>
-    {{end}}
+    {{template "post" .}}
     <ul class="pagination">
         <li>
             <a href="?page=1&pageSize={{$.paging.Pagesize}}" class="not">«</a>

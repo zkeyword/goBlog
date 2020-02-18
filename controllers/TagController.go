@@ -19,10 +19,10 @@ func (ctx *TagController) Get() mvc.Result {
 	var results = make(map[string]interface{})
 
 	results["Title"] = "文章页"
-	results["Articles"] = services.NewTagService.GetList()
+	results["Tags"] = services.NewTagService.GetList()
 
 	return mvc.View{
-		Name: "article.html",
+		Name: "tag.html",
 		Data: result.Map(results),
 	}
 }
