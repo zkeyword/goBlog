@@ -5,8 +5,18 @@ import (
 	"BLOG/services"
 	"BLOG/util/result"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
+
+	"encoding/csv"
+
+	"github.com/360EntSecGroup-Skylar/excelize"
 )
 
 // HomeController 首页
@@ -157,4 +167,57 @@ func (ctx *HomeController) PostSignup() {
 	// results["return_url"] = "/login"
 	_, _ = ctx.Ctx.JSON(results)
 	return
+}
+
+// GetCsv test csv
+func (ctx *HomeController) GetCsv() {
+	in := `first_name,last_name,username
+"Rob","Pike",rob
+Ken,Thompson,ken
+"Robert","Griesemer","gri"`
+	r := csv.NewReader(strings.NewReader(in))
+
+	ctx.Ctx.ContentType("text/csv")
+
+	record, err := r.Read()
+	i := 0
+
+	ctx.Ctx.StreamWriter(func(w io.Writer) bool {
+		// time.Sleep(500 * time.Millisecond) // simulate delay.
+		if i == len(record)-1 {
+			return false //关闭并刷新
+		}
+		i++
+		if err == io.EOF {
+			return false
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		return true //继续写入数据
+	})
+}
+
+// GetXlsx 导出xslx文件
+func (ctx *HomeController) GetXlsx() {
+	f := excelize.NewFile()
+	// Create a new sheet.
+	index := f.NewSheet("Sheet2")
+	// Set value of a cell.
+	f.SetCellValue("Sheet2", "A2", "Hello world.")
+	f.SetCellValue("Sheet1", "B2", 100)
+	// Set active sheet of the workbook.
+	f.SetActiveSheet(index)
+	// Save xlsx file by the given path.
+	// if err := f.SaveAs("Book1.xlsx"); err != nil {
+	// 	fmt.Println(err)
+	// }
+	// ctx.Ctx.Write(f.WriteToBuffer())
+	buffer, err := f.WriteToBuffer()
+	if err != nil {
+		fmt.Println(err)
+	}
+	filename := "results.xlsx"
+
+	http.ServeContent(ctx.Ctx.ResponseWriter(), ctx.Ctx.Request(), filename, time.Now(), strings.NewReader(buffer.String()))
 }
