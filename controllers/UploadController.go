@@ -14,7 +14,7 @@ type UploadController struct {
 	Ctx iris.Context
 }
 
-// Get 文章列表Get请求
+// Get 上传页面 GET /upload
 func (ctx *UploadController) Get() mvc.Result {
 
 	return mvc.View{
@@ -22,7 +22,7 @@ func (ctx *UploadController) Get() mvc.Result {
 	}
 }
 
-// Post 新增文章
+// Post 上传 POST /upload
 func (ctx *UploadController) Post() {
 	// ctx.Ctx.SetMaxRequestBodySize(1024 * 1024 * 10)
 	file, info, err := ctx.Ctx.FormFile("file")

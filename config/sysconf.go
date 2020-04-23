@@ -26,7 +26,7 @@ type System struct {
 
 // SystemConfig web系统配置
 var SystemConfig = &System{
-	AppTitle:      "BlockWallet",
+	AppTitle:      "APP",
 	UserIDKey:     "UserID",
 	UserStructKey: "User",
 }
