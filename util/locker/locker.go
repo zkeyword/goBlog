@@ -1,15 +1,16 @@
 package locker
 
 import (
-	"IRIS_WEB/utility/db"
+	"BLOG/util/db"
 	"errors"
-	"github.com/gomodule/redigo/redis"
 	"time"
+
+	"github.com/gomodule/redigo/redis"
 )
 
 type Locker struct {
-	Key    string
-	Error  error
+	Key   string
+	Error error
 }
 
 func Lock(key string) (locker *Locker) {

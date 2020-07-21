@@ -145,10 +145,16 @@ func SetupErrorHandlers(app *Application) {
 	})
 }
 
-//SetupSessions 设置Session
+// SetupSessions 设置Session
 func SetupSessions(app *Application) {
 	app.Sessions = sessions.New(sessions.Config{
 		Cookie:  "ssid",
 		Expires: 24 * time.Hour,
 	})
 }
+
+// WebSocket
+// func (app *Application) runWebSocket() {
+// 	ws := websocket.New(websocket.Config{})
+// }
+// https://studyiris.com/example/mvc/websocket.html

@@ -2,20 +2,21 @@ package db
 
 import (
 	"errors"
-	"github.com/gomodule/redigo/redis"
 	"time"
+
+	"github.com/gomodule/redigo/redis"
 )
 
 var redisPool *redis.Pool
 
-// 初始化redis
-func StartRedis(addr string, db, maxIdle, maxOpen int) (err error) {
+// StartRedis 初始化redis
+func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err error) {
 	redisPool = &redis.Pool{
 		MaxIdle:     maxIdle,
 		MaxActive:   maxOpen,
 		IdleTimeout: time.Duration(30) * time.Minute,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", addr, redis.DialDatabase(db))
+			return redis.Dial("tcp", addr, redis.DialDatabase(db), redis.DialPassword(password))
 		},
 	}
 
@@ -40,4 +41,3 @@ func CloseRedis() {
 		redisPool.Close()
 	}
 }
-

@@ -6,7 +6,7 @@ require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/Chronokeeper/anyxml v0.0.0-20160530174208-54457d8e98c6 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
-	github.com/JabinGP/demo-chatroom v0.0.0-20191225045436-bc8ad7428bf6
+	github.com/JabinGP/demo-chatroom v0.0.0-20191225045436-bc8ad7428bf6 // indirect
 	github.com/agrison/go-tablib v0.0.0-20160310143025-4930582c22ee // indirect
 	github.com/agrison/mxj v0.0.0-20160310142625-1269f8afb3b4 // indirect
 	github.com/bndr/gotabulate v1.1.2 // indirect
@@ -29,7 +29,7 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.1 // indirect
 	github.com/lib/pq v1.1.1
-	github.com/mlogclub/simple v1.0.50
+	github.com/mlogclub/simple v1.0.50 // indirect
 	github.com/mojocn/base64Captcha v1.3.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect

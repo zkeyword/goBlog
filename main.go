@@ -30,6 +30,11 @@ func main() {
 	checkErr("Start Mysql", db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen))
 	fmt.Print("Start Mysql Success!!!\n")
 
+	// 启动redis
+	defer db.CloseRedis()
+	checkErr("Start Redis", db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen))
+	fmt.Print("Start Redis Success!!!\n")
+
 	// 开始运行iris框架
 	app.New()
 }

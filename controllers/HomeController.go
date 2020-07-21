@@ -3,6 +3,7 @@ package controllers
 import (
 	"BLOG/model"
 	"BLOG/services"
+	"BLOG/util/db"
 	"BLOG/util/result"
 	"fmt"
 	"io"
@@ -17,6 +18,7 @@ import (
 	"encoding/csv"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/gomodule/redigo/redis"
 )
 
 // HomeController 首页
@@ -37,6 +39,40 @@ func (ctx *HomeController) Get() mvc.Result {
 	if err == nil {
 		results["Articles"] = list
 	}
+
+	c := db.GetRedis()
+
+	defer c.Close()
+
+	length, err := c.Do("LLEN", "h:l:t")
+	if err != nil {
+		fmt.Println("err", err)
+	}
+
+	if length.(int64) < 10 {
+		//写入数据
+		_, err := c.Do("LPUSH", "h:l:t", "1")
+		if err != nil {
+			fmt.Println("err while setting:", err)
+		}
+	} else {
+		//读取数据
+		val, err := redis.Values(c.Do("LRANGE", "h:l:t", 0, 10))
+		if err != nil {
+			fmt.Println("err while setting:", err)
+		}
+		for _, v := range val {
+			fmt.Printf("%s ", v.([]uint8))
+		}
+	}
+
+	// //判断key是否存在
+	// isKeyExit, err := redis.Bool(c.Do("EXISTS", "go_key"))
+	// if err != nil {
+	// 	fmt.Println("err while checking keys:", err)
+	// } else {
+	// 	fmt.Println(isKeyExit)
+	// }
 
 	// fmt.Println(ctx.Ctx.GetLocale().Language(), ctx.Ctx.Tr("hi", &user{
 	// 	Name: "John Doe",
@@ -220,4 +256,55 @@ func (ctx *HomeController) GetXlsx() {
 	filename := "results.xlsx"
 
 	http.ServeContent(ctx.Ctx.ResponseWriter(), ctx.Ctx.Request(), filename, time.Now(), strings.NewReader(buffer.String()))
+}
+
+// GetRedis redis操作
+func (ctx *HomeController) GetRedis() {
+	c := db.GetRedis()
+
+	//记得销毁本次链连接
+	defer c.Close()
+
+	//写入数据
+	_, err := c.Do("SET", "go_key", "redigo")
+	if err != nil {
+		fmt.Println("err while setting:", err)
+	}
+
+	//判断key是否存在
+	isKeyExit, err := redis.Bool(c.Do("EXISTS", "go_key"))
+	if err != nil {
+		fmt.Println("err while checking keys:", err)
+	} else {
+		fmt.Println(isKeyExit)
+	}
+
+	//获取value并转成字符串
+	accountBalance, err := redis.String(c.Do("GET", "go_key"))
+	if err != nil {
+		fmt.Println("err while getting:", err)
+	} else {
+		fmt.Println(accountBalance)
+	}
+
+	//删除key
+	_, err = c.Do("DEL", "go_key")
+	if err != nil {
+		fmt.Println("err while deleting:", err)
+	}
+
+	//设置key过期时间
+	_, err = c.Do("SET", "mykey", "superWang", "EX", "5")
+	if err != nil {
+		fmt.Println("err while setting:", err)
+	}
+
+	//对已有key设置5s过期时间
+	n, err := c.Do("EXPIRE", "go_key", 5)
+	if err != nil {
+		fmt.Println("err while expiring:", err)
+	} else if n != int64(1) {
+		fmt.Println("failed")
+	}
+	return
 }
